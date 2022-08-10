@@ -10,6 +10,7 @@ NAME	=		my_runner
 CFLAGS	= 		-W -Wall -Wextra
 
 SRC		=		./src/my_main.c					\
+				./src/game/game_view.c			\
 
 OBJ		=		$(SRC:.c=.o)
 
