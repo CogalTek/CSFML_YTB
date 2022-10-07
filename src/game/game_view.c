@@ -10,14 +10,25 @@
 
 void game_function(sfRenderWindow* window, sfEvent event)
 {
+    int x_floor = 0;
     sfTexture *floor_t = sfTexture_createFromFile("./content/floor.png", NULL);
     sfSprite *floor_s = sfSprite_create();
     sfVector2f floor_scale = {3, 3};
-    sfVector2f floor_pos = {0, 800};
+    sfVector2f floor_pos = {x_floor, 800};
 
     sfSprite_setTexture(floor_s, floor_t, sfTrue);
     sfSprite_setScale(floor_s, floor_scale);
     sfSprite_setPosition(floor_s, floor_pos);
+
+    int x_floor02 = 2100;
+    sfTexture *floor02_t = sfTexture_createFromFile("./content/floor.png", NULL);
+    sfSprite *floor02_s = sfSprite_create();
+    sfVector2f floor02_scale = {3, 3};
+    sfVector2f floor02_pos = {x_floor02, 800};
+
+    sfSprite_setTexture(floor02_s, floor02_t, sfTrue);
+    sfSprite_setScale(floor02_s, floor02_scale);
+    sfSprite_setPosition(floor02_s, floor02_pos);
 
     sfTexture *player_t = sfTexture_createFromFile("./content/tourelle.png", NULL);
     sfSprite *player_s = sfSprite_create();
@@ -44,6 +55,7 @@ void game_function(sfRenderWindow* window, sfEvent event)
         sfSprite_setRotation(player_s, orientation);
         sfRenderWindow_clear(window, sfBlue);
         sfRenderWindow_drawSprite(window, floor_s, NULL);
+        sfRenderWindow_drawSprite(window, floor02_s, NULL);
         sfRenderWindow_drawSprite(window, player_s, NULL);
         sfRenderWindow_display(window);
 
@@ -55,6 +67,20 @@ void game_function(sfRenderWindow* window, sfEvent event)
             y = y + 2;
             sfVector2f player_pos = {x, y};
             sfSprite_setPosition(player_s, player_pos);
+        }
+        x_floor = x_floor - 2;
+        x_floor02 = x_floor02 - 2;
+        sfVector2f floor_pos = {x_floor, 800};
+        sfSprite_setPosition(floor_s, floor_pos);
+        if (x_floor <= -2100)
+            x_floor = 2100;
+        sfVector2f floor02_pos = {x_floor02, 800};
+        sfSprite_setPosition(floor02_s, floor02_pos);
+        if (x_floor02 <= -2100)
+            x_floor02 = 2100;
+        if (event.type == sfEvtMouseButtonPressed) {
+            printf("floor01 : %d\n", x_floor);
+            printf("floor02 : %d\n", x_floor02);
         }
     }
 }
