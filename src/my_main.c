@@ -8,59 +8,41 @@
 #include <unistd.h>
 #include "../includes/my.h"
 
-void if_click(sfRenderWindow* window, sfEvent event)
+static void if_click(GLOBAL_T *ALL)
 {
-    sfVector2i mouse = sfMouse_getPosition(window);
-    if (mouse.x >= 816 && mouse.x <= 1062) {
-        if (mouse.y >= 526 && mouse.y <= 594) {
-            if (event.type == sfEvtMouseButtonPressed)
-                game_function(window, event);
+    int i = 0;
+    sfVector2i mouse = sfMouse_getPosition(WINDOW);
+
+    if (mouse.x >= 816 && mouse.x <= 1062)
+        if (mouse.y >= 526 && mouse.y <= 594)
+            i = 1;
+    if (EVENT.type == sfEvtMouseButtonPressed && i)
+        game_function(ALL);
+}
+
+static void play (GLOBAL_T *ALL)
+{
+    while (sfRenderWindow_isOpen(WINDOW)) {
+        while (sfRenderWindow_pollEvent(WINDOW, &EVENT)) {
+            if (EVENT.type == sfEvtClosed) {
+                sfRenderWindow_close(WINDOW);
+            }
         }
+        sfRenderWindow_clear(WINDOW, sfBlack);
+        sfRenderWindow_drawSprite(ALL->settings.window, ALL->pictures[0].sprite, NULL);
+        sfRenderWindow_drawSprite(WINDOW, IMG[1].sprite, NULL);
+        sfRenderWindow_display(WINDOW);
+
+        if_click(ALL);
     }
 }
 
 int main (void)
 {
-    sfVideoMode mode = {1920, 1080, 64};
-    sfRenderWindow* window;
-    sfEvent event;
+    GLOBAL_T ALL;
 
-    sfTexture *texture = sfTexture_createFromFile("./content/main-menu.png", NULL);
-    sfSprite *sprite = sfSprite_create();
-
-    sfTexture *texture02 = sfTexture_createFromFile("./content/start-button.png", NULL);
-    sfSprite *button = sfSprite_create();
-
-    sfVector2f scale = {1.12, 1.12};
-    sfVector2f scale_button = {10, 10};
-
-    sfVector2f pos_button = {800, 500};
-
-
-    sfSprite_setTexture(sprite, texture, sfTrue);
-    sfSprite_setScale(sprite, scale);
-
-    sfSprite_setTexture(button, texture02, sfTrue);
-    sfSprite_setScale(button, scale_button);
-    sfSprite_setPosition(button, pos_button);
-
-    window = sfRenderWindow_create(mode, "My Runner", sfResize | sfClose, NULL);
-
-    while (sfRenderWindow_isOpen(window)) {
-        while (sfRenderWindow_pollEvent(window, &event)) {
-            if (event.type == sfEvtClosed) {
-                sfRenderWindow_close(window);
-            }
-        }
-
-        sfRenderWindow_clear(window, sfWhite);
-        sfRenderWindow_drawSprite(window, sprite, NULL);
-        sfRenderWindow_drawSprite(window, button, NULL);
-        sfRenderWindow_display(window);
-
-        if_click(window, event);
-    }
-
+    init(&ALL);
+    play(&ALL);
     return 0;
 }
 

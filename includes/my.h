@@ -19,7 +19,11 @@
 
     #define sfCf sfTexture_createFromFile
     #define sfWc sfRenderWindow_create
+    #define WINDOW ALL->settings.window
+    #define EVENT ALL->settings.event
+    #define IMG ALL->pictures
 
-    void game_function(sfRenderWindow* window, sfEvent event);
+    void game_function(GLOBAL_T *ALL);
+    void init (GLOBAL_T *ALL);
 
 #endif

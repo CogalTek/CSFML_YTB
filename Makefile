@@ -11,6 +11,7 @@ CFLAGS	= 		-W -Wall -Wextra
 
 SRC		=		./src/my_main.c					\
 				./src/game/game_view.c			\
+				./src/init.c					\
 
 OBJ		=		$(SRC:.c=.o)
 
@@ -37,5 +38,6 @@ perf:	CFLAGS+= -pg
 perf:	all
 
 re:	fclean all
+re_apple:	fclean apple
 
 .PHONY:	all apple clean fclean debug perf re
