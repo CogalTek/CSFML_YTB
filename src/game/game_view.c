@@ -28,7 +28,7 @@ static void jump (GLOBAL_T *ALL)
     }
 }
 
-static floor_animation(GLOBAL_T *ALL)
+static void floor_animation(GLOBAL_T *ALL)
 {
     IMG[2].pos.x -= 2;
     IMG[3].pos.x = IMG[3].pos.x - 2;
